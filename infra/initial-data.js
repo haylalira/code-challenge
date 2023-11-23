@@ -6278,7 +6278,8 @@ export const loadInitialData = () => {
     return;
   }
   COMMUNITIES_DATA.forEach(community => Communities.insert(community));
-
+   
+  
   const communities = Communities.find().fetch();
 
   PEOPLE_DATA.forEach((person, idx) =>

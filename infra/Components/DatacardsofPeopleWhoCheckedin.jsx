@@ -1,13 +1,18 @@
 import React from 'react';
 import { useTracker } from 'meteor/react-meteor-data';
 import { People } from '../../people/people';
-import { Communities } from '../../communities/communities';
 
-import { Box,} from '@mui/material';
+
+import { Box,Card, Button} from '@mui/material';
+import { ButtonCheckIn } from './ButtonCheckIn';
+
 
 
 
 export const DatacardsofPeopleWhoCheckedin = () => {
+
+
+
 
      // calling the api to access the data
   const people = useTracker(() => {
@@ -15,38 +20,42 @@ export const DatacardsofPeopleWhoCheckedin = () => {
     if (handlePeople.ready()) {
       return People.find().fetch();
     }
+    console.log(People, "tem isso")
     return [];
   });
 
-  const communities = useTracker(() => {
-    const handleCommunities = Meteor.subscribe('communities');
-    if (handleCommunities.ready()) {
-      return Communities.find().fetch();
-    }
-    return [];
-  });
+
 
   //  acesso tanto aos dados de People quanto de Communities
 
     return(
-        <Box>
-        <h1>Lista de Pessoas</h1>
-        <ul>
-          {people.map(person => (
-            <div className="w-26 h-36 bg-red-300 mt-6 flex-wrap">
-              <li
-                key={person._id}
-              >{`${person.firstName} ${person.lastName}`}</li>
-            </div>
-          ))}
-        </ul>
+        <Box className=''>
+        
+        
+        <div className='flex flex-col mt-10'>
+        {people.map(person => (
+          <Card key={person._id}  sx={{ width:"600px" , height:"100px", marginTop:"10px",background: "rgb(63,94,251)",
+          background: "linear-gradient(90deg, rgba(63,94,251,1) 0%, rgba(252,70,107,1) 92%)", color:"#fff" }}
+           className='flex items-center justify-around'
+          >
+            <div className='!text-gray-100'> <h1 className='font-bold'>{`${person.firstName} ${person.lastName}`}</h1>
+             <p>{person.title}</p>
+             <h1>{person.companyName}</h1>
+             
+             </div>
+           <div>
+<Button sx={{color:"#fff"}}>CheckOut</Button>
+     <data></data>
+</div>
+   
+        
+          </Card>
+        ))}
+      </div>
+       
 
-        <h1>Lista de Comunidades</h1>
-        <ul>
-          {communities.map(community => (
-            <li key={community._id}>{community.name}</li>
-          ))}
-        </ul>
+       
+        
       </Box>
     )
 }

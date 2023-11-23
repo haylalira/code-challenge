@@ -14,7 +14,8 @@ Meteor.startup(() => {
     return People.find();
   });
 
-  Meteor.publish('comunities', function (){
+  Meteor.publish('communities', function (){
      return Communities.find()
   })
+ 
 });
