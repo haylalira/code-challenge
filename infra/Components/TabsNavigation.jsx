@@ -23,6 +23,10 @@ export function TabsNavigation(
     return null; // ou qualquer outra lógica de carregamento
   }
 
+
+    console.log("ta recebendo dados")
+ 
+
   return (
     <Box sx={{ width: '100%', typography: 'body1' }}>
       <TabContext value={value}>
@@ -40,9 +44,7 @@ export function TabsNavigation(
         </Box>
         <TabPanel value="1" className="">
           <DatacardsofPeopleWhoCheckedin
-            peopleList={peopleList}
-            handleCheckIn={handleCheckIn}
-            handleCheckOut={handleCheckOut}
+          
           />
         </TabPanel>
         <TabPanel value="2">Item Two</TabPanel>

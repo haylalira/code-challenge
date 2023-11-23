@@ -16,11 +16,16 @@ export const App = () => {
   const [currentData , setCurrentData]= useState( new Date())
   const [seletedEvent ,setSelectedEvent]= useState('')
 
-  const [peopleList , setPeopleList ] = useState([])
+  const [peopleList , setPeopleList ] = useState([ {
+    firstName: 'Greg',
+    lastName: 'Foster',
+    title: 'Portfolio Director',
+    companyName: 'NERA Economic Consulting',
+  }])
   const [checkInList , setCheckInList]=useState([])
   const [checkOutList , setCheckOutList] = useState([])
 
-   console.log(seletedEvent,"nomedoevento")
+  
 
   const NameEvent = ['I love code', 'Challenge', 'Great Code']
 
@@ -35,9 +40,10 @@ export const App = () => {
  const people = useTracker(() => {
   const handlePeople = Meteor.subscribe('people');
   if (handlePeople.ready()) {
-    return People.find().fetch();
+    //setPeopleList(People.find().fetch())
+   return People.find().fetch();
   }
-  console.log(People, "tem isso")
+ 
   return [];
 });
 
@@ -50,6 +56,7 @@ const handleCheckOut = (people)=>{
   setCheckOutList([...checkOutList ,people])
   setPeopleList(peopleList.filter((p) => p._id !== person._id));
 }
+
  useEffect(()=>{
 
   const DataRender = setInterval(()=>{
@@ -62,6 +69,7 @@ const handleCheckOut = (people)=>{
   return (
     <div className="w-full bg-gradient to-emerald-50 from-slate-300 flex flex-col items-center ">
       <Box className="w-full h-32 border-b-2 border-neutral-200 flex items-center justify-center">
+
         <select onChange={(e) => setSelectedEvent(e.target.value)}>
   <option value="">Select an Event</option>
   {communities.map((community) => (
@@ -120,7 +128,8 @@ const handleCheckOut = (people)=>{
          handleCheckIn={handleCheckIn}
          handleCheckOut={handleCheckOut}/>
       </Box>
-      </>)}
+      </>
+      )}
      
     </div>
   );
