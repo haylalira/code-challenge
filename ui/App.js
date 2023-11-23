@@ -16,6 +16,14 @@ export const App = () => {
   const [currentData , setCurrentData]= useState( new Date())
   const [seletedEvent ,setSelectedEvent]= useState('')
 
+  const [peopleList , setPeopleList ] = useState([])
+  const [checkInList , setCheckInList]=useState([])
+  const [checkOutList , setCheckOutList] = useState([])
+
+   console.log(seletedEvent,"nomedoevento")
+
+  const NameEvent = ['I love code', 'Challenge', 'Great Code']
+
   const communities = useTracker(() => {
    const handleCommunities = Meteor.subscribe('communities');
    if (handleCommunities.ready()) {
@@ -24,6 +32,24 @@ export const App = () => {
    return [];
  });
 
+ const people = useTracker(() => {
+  const handlePeople = Meteor.subscribe('people');
+  if (handlePeople.ready()) {
+    return People.find().fetch();
+  }
+  console.log(People, "tem isso")
+  return [];
+});
+
+const handleCheckIn = (people)=>{
+   setCheckInList([...checkInList ,people]),
+   setPeopleList(peopleList.filter((p)=> p._id !== person._id))
+}
+
+const handleCheckOut = (people)=>{
+  setCheckOutList([...checkOutList ,people])
+  setPeopleList(peopleList.filter((p) => p._id !== person._id));
+}
  useEffect(()=>{
 
   const DataRender = setInterval(()=>{
@@ -39,20 +65,20 @@ export const App = () => {
         <select onChange={(e) => setSelectedEvent(e.target.value)}>
   <option value="">Select an Event</option>
   {communities.map((community) => (
-    <option key={community._id} value={community._id}>
+    <option key={community._id} value={community.name}>
       {community.name}
     </option>
   ))}
 </select>
       </Box>
-       {seletedEvent && ( <>
+       {seletedEvent  && NameEvent.includes(seletedEvent) && ( <>
        <Box className="mt-28 mb-24">
         <Card
           className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 w-[56.25rem] h-72 flex flex-col  justify-center gap-12 "
           sx={{ borderRadius: '1.6rem' }}
         >
           <div className="text-white  p-4 flex flex-col items-center">
-            <h1 className='font-bold text-lg'>NOME DO EVENTO</h1>
+            <h1 className='font-bold text-lg'>{seletedEvent}</h1>
             <p>{currentData.toLocaleString()}</p>
             <div className="flex gap-2">
               <GroupIcon fontSize="large" />
@@ -67,7 +93,7 @@ export const App = () => {
                 <ArrowUpwardIcon fontSize="large" color="success" />
               </IconButton>
               <div className="flex flex-col text-white">
-                <h1>Ingresos</h1>
+                <h1>Pessoas em CheckIn</h1>
                 <h1 className="font-bold ">$55.422,00</h1>
               </div>
             </div>
@@ -77,7 +103,7 @@ export const App = () => {
                 <ArrowDownwardIcon fontSize="large" color="error" />
               </IconButton>
               <div className="flex flex-col text-white">
-                <h1>Ingresos</h1>
+                <h1>Pessoas em checkOut</h1>
                 <h1 className="font-bold ">$55.422,00</h1>
               </div>
             </div>
@@ -87,7 +113,12 @@ export const App = () => {
 
       <Box>
         
-        <TabsNavigation />
+        <TabsNavigation
+         peopleList={peopleList} 
+         checkInList={checkInList}
+         checkOutList={checkOutList}
+         handleCheckIn={handleCheckIn}
+         handleCheckOut={handleCheckOut}/>
       </Box>
       </>)}
      

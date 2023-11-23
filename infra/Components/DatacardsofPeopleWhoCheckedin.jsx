@@ -9,7 +9,11 @@ import { ButtonCheckIn } from './ButtonCheckIn';
 
 
 
-export const DatacardsofPeopleWhoCheckedin = () => {
+export const DatacardsofPeopleWhoCheckedin = ( 
+  peopleList,
+  handleCheckIn,
+  handleCheckOut,
+) => {
 
 
 
@@ -33,7 +37,7 @@ export const DatacardsofPeopleWhoCheckedin = () => {
         
         
         <div className='flex flex-col mt-10'>
-        {people.map(person => (
+        {peopleList.map(person => (
           <Card key={person._id}  sx={{ width:"600px" , height:"100px", marginTop:"10px",background: "rgb(63,94,251)",
           background: "linear-gradient(90deg, rgba(63,94,251,1) 0%, rgba(252,70,107,1) 92%)", color:"#fff" }}
            className='flex items-center justify-around'
@@ -44,7 +48,8 @@ export const DatacardsofPeopleWhoCheckedin = () => {
              
              </div>
            <div>
-<Button sx={{color:"#fff"}}>CheckOut</Button>
+<Button sx={{color:"#fff"}} onClick={() => handleCheckIn(person)} >CheckOut</Button>
+<Button sx={{color:"#fff"}} onClick={() => handleCheckOut(person)} >CheckIn</Button>
      <data></data>
 </div>
    
