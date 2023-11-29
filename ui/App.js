@@ -15,15 +15,17 @@ import { TabsNavigation } from '../infra/Components/TabsNavigation';
 export const App = () => {
   const [currentData , setCurrentData]= useState( new Date())
   const [seletedEvent ,setSelectedEvent]= useState('')
+  
+  const people = useTracker(() => {
+    const handlePeople = Meteor.subscribe('people');
+    if (handlePeople.ready()) {
+      return People.find().fetch();
+    }
+    
+    return [];
+  });
 
-  const [peopleList , setPeopleList ] = useState([ {
-    firstName: 'Greg',
-    lastName: 'Foster',
-    title: 'Portfolio Director',
-    companyName: 'NERA Economic Consulting',
-  }])
-  const [checkInList , setCheckInList]=useState([])
-  const [checkOutList , setCheckOutList] = useState([])
+  const  TotalDePessoas =people.length
 
   
 
@@ -37,25 +39,8 @@ export const App = () => {
    return [];
  });
 
- const people = useTracker(() => {
-  const handlePeople = Meteor.subscribe('people');
-  if (handlePeople.ready()) {
-    //setPeopleList(People.find().fetch())
-   return People.find().fetch();
-  }
- 
-  return [];
-});
 
-const handleCheckIn = (people)=>{
-   setCheckInList([...checkInList ,people]),
-   setPeopleList(peopleList.filter((p)=> p._id !== person._id))
-}
 
-const handleCheckOut = (people)=>{
-  setCheckOutList([...checkOutList ,people])
-  setPeopleList(peopleList.filter((p) => p._id !== person._id));
-}
 
  useEffect(()=>{
 
@@ -78,6 +63,7 @@ const handleCheckOut = (people)=>{
     </option>
   ))}
 </select>
+
       </Box>
        {seletedEvent  && NameEvent.includes(seletedEvent) && ( <>
        <Box className="mt-28 mb-24">
@@ -102,7 +88,7 @@ const handleCheckOut = (people)=>{
               </IconButton>
               <div className="flex flex-col text-white">
                 <h1>Pessoas em CheckIn</h1>
-                <h1 className="font-bold ">$55.422,00</h1>
+                <h1 className="font-bold ">{TotalDePessoas}</h1>
               </div>
             </div>
 
@@ -122,11 +108,7 @@ const handleCheckOut = (people)=>{
       <Box>
         
         <TabsNavigation
-         peopleList={peopleList} 
-         checkInList={checkInList}
-         checkOutList={checkOutList}
-         handleCheckIn={handleCheckIn}
-         handleCheckOut={handleCheckOut}/>
+        />
       </Box>
       </>
       )}
